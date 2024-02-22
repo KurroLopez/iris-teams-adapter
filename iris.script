@@ -1,0 +1,9 @@
+zn "%SYS"
+Do ##class(Security.Users).UnExpireUserPasswords("*")
+set prop("DeepSeeEnabled")=1
+do ##class(Security.Applications).Modify("/csp/user",.prop)
+zn "USER"
+zpm "load /opt/irisbuild/ -v":1
+zpm "install iris-deploy-tools -v" 
+hang 2
+halt
