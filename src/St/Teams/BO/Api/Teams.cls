@@ -17,8 +17,9 @@ Method CallApi(pParameter = "", Output pResponse As Ens.StringResponse) As %Stat
     try
     {
         $$$LOGINFO("HTTPServer: "_..Adapter.HTTPServer)
-        set tSC = ..InicializaRest(..Adapter.HTTPServer, .tHttpRequest)
-        $$$ThrowOnError(tSC)
+        set tHttpRequest=##class(%Net.HttpRequest).%New()
+        set tHttpRequest.Server = ..Adapter.HTTPServer
+        set tHttpRequest.ContentType = "application/json; charset=utf-8"
         set pResponse = ##class(Ens.StringResponse).%New()
 
         // The parameters class is serialized as JSon
@@ -27,7 +28,7 @@ Method CallApi(pParameter = "", Output pResponse As Ens.StringResponse) As %Stat
         $$$LOGINFO("JSON: "_tStream.Read())
         do tHttpRequest.EntityBody.CopyFrom(tStream)
 
-        set tSC = ..Adapter.SendFormDataArray(.tHttpResponse, "POST", tHttpRequest,,,"/")
+        set tSC = ..Adapter.SendFormDataArray(.tHttpResponse, "POST", tHttpRequest,,,..Adapter.URL)
         if $$$ISERR(tSC) $$$ThrowStatus(tSC)
         // Check status code
         set statusCode = tHttpResponse.StatusCode
@@ -53,15 +54,6 @@ Method CallApi(pParameter = "", Output pResponse As Ens.StringResponse) As %Stat
     }
     
     Quit ret
-}
-
-/// Initialize the common parameters to start a HTTPRequest
-Method InicializaRest(server As %String, Output pRequest As %Net.HttpRequest) As %Status
-{
-    set pRequest=##class(%Net.HttpRequest).%New()
-	set pRequest.Server = server
-    set pRequest.ContentType = "application/json; charset=utf-8"
-    Quit $$$OK
 }
 
 /// MessageMap
