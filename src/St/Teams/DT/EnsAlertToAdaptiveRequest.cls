@@ -24,6 +24,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='"small"' property='target.Attachments.(1).Content.Body.(1).Items.(2).Size' action='set' />
 <assign value='1' property='target.Attachments.(1).Content.Body.(1).Items.(2).IsSubtitle' action='set' />
 <assign value='"TextBlock"' property='target.Attachments.(1).Content.Body.(1).Items.(3).Type' action='set' />
+<assign value='"1"' property='target.Attachments.(1).Content.Body.(1).Items.(3).Wrap' action='set' />
 <assign value='source.AlertText' property='target.Attachments.(1).Content.Body.(1).Items.(3).Text' action='set' />
 <assign value='"FactSet"' property='target.Attachments.(1).Content.Body.(1).Items.(4).Type' action='set' />
 <assign value='"SessionId"' property='target.Attachments.(1).Content.Body.(1).Items.(4).Facts.(1).Title' action='set' />
