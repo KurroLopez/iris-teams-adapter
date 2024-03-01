@@ -5,28 +5,29 @@ Class St.Teams.BO.Api.Teams Extends EnsLib.REST.Operation
 Method SendAdaptiveCard(pRequest As St.Teams.Msg.Adaptive.Request, Output pResponse As Ens.StringResponse) As %Status
 {
     // Create the message to convert the alert to a Teams Card
-    set message = ##class(St.Teams.Msg.Adaptive.Request).New()
-    set tSC = ..CallApi(pRequest,.apiResponse)
-    set pResponse = ##class(Ens.StringResponse).%New(apiResponse)
+    set tSC = ..CallApi(pRequest,.pResponse)
     quit $$$OK
 }
 
-Method CallApi(pParameter = "", Output pResponse As %String) As %Status
+Method CallApi(pParameter = "", Output pResponse As Ens.StringResponse) As %Status
 {
     #Dim excepcion As %Exception.AbstractException
 
     set ret = $$$OK
     try
     {
-        set tSC = ..initializeRest(.tHttpRequest)
+        $$$LOGINFO("HTTPServer: "_..Adapter.HTTPServer)
+        set tSC = ..InicializaRest(..Adapter.HTTPServer, .tHttpRequest)
         $$$ThrowOnError(tSC)
+        set pResponse = ##class(Ens.StringResponse).%New()
 
         // The parameters class is serialized as JSon
         set tStream = ##class(%Stream.GlobalCharacter).%New()
         do pParameter.%JSONExportToStream(.tStream)
+        $$$LOGINFO("JSON: "_tStream.Read())
         do tHttpRequest.EntityBody.CopyFrom(tStream)
 
-        set tSC = ..Adapter.SendFormDataArray(.tHttpResponse, "POST", tHttpRequest,,,url)
+        set tSC = ..Adapter.SendFormDataArray(.tHttpResponse, "POST", tHttpRequest,,,"/")
         if $$$ISERR(tSC) $$$ThrowStatus(tSC)
         // Check status code
         set statusCode = tHttpResponse.StatusCode
@@ -40,14 +41,14 @@ Method CallApi(pParameter = "", Output pResponse As %String) As %Status
         if (statusCode '= 200)
         {
 	        $$$TRACE("Content: "_content)
-            set objError = ##class(%DynamicAbstractObject).%FromJSON(content)
-            $$$ThrowStatus($$$ERROR($$$GeneralError, "Error "_statusCode_" - "_objError))
+            $$$ThrowStatus($$$ERROR($$$GeneralError, "Error "_statusCode_" - "_content))
         }
 
-        set pResponse = ##class(%DynamicAbstractObject).%FromJSON(content)
+        set pResponse.StringValue = content
     }
     catch excepcion
     {
+        $$$TRACE("Error: "_excepcion)
         set ret = excepcion.AsStatus()
     }
     
@@ -55,9 +56,10 @@ Method CallApi(pParameter = "", Output pResponse As %String) As %Status
 }
 
 /// Initialize the common parameters to start a HTTPRequest
-Method initializeRest(Output pRequest As %Net.HttpRequest) As %Status
+Method InicializaRest(server As %String, Output pRequest As %Net.HttpRequest) As %Status
 {
     set pRequest=##class(%Net.HttpRequest).%New()
+	set pRequest.Server = server
     set pRequest.ContentType = "application/json; charset=utf-8"
     Quit $$$OK
 }

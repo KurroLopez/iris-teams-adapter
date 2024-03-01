@@ -8,6 +8,7 @@
     do ##class(Security.Applications).Modify("/csp/user",.prop)
     zn "USER"
     zpm "load /opt/irisbuild/ -v":1
-    zpm "install webterminal -v" 
+    zpm "install iris-deploy-tools -v" 
+    zpm "install webterminal -v"
     hang 2
     halt
