@@ -1,6 +1,15 @@
 {
-    "objectscript.conn" :{
-      "active": true,
-      "ns": "USER"
-    }
+  "files.associations": {
+
+    "Dockerfile*": "dockerfile",
+    "iris.script": "objectscript"
+  },
+  "objectscript.conn" :{
+    "active": true,
+    "ns": "USER"
+  },
+  "links": {
+    "UnitTest Portal": "${serverUrl}/csp/sys/%25UnitTest.Portal.Home.cls?$NAMESPACE=USER"
+  },
+    "intersystems.testingManager.client.relativeTestRoot": "tests"
 }
