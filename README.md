@@ -49,18 +49,18 @@ Webhook link: https://YOURCOMPANY.webhook.office.com/webhookb2/40cc6704-1bc5-4f8
 **URL:** /webhookb2/40cc6704-1bc5-4f87-xxxx-xxxxxxxxf@5xxxxxa-643b-47a3-xxxxx-fc962cc7cdb2/IncomingWebhook/6f272d796f1844b8b0b57b61365f8961/2ff46079-ee4a-442b-a642-dc418f6c67ee
 ```
 
-![](Configure_St.Teams.BO.API.Teams.png)
+![](https://github.com/KurroLopez/iris-teams-adapter/blob/master/Configure_St.Teams.BO.API.Teams.png)
 
 If you want to test, using the BPs in the demo production, select "Test" button and invoke testing service
 
-![](Test_SendMessage.png)
-![](Test_SendMessage_II.png)
+![](https://github.com/KurroLopez/iris-teams-adapter/blob/master/Test_SendMessage.png)
+![](https://github.com/KurroLopez/iris-teams-adapter/blob/master/Test_SendMessage_II.png)
 
 Check in your teams group
 
-![](Teams_personal_message.png)
+![](https://github.com/KurroLopez/iris-teams-adapter/blob/master/Teams_personal_message.png)
 
 For test RaiseError, select any Ens.Request, it doesn't need any entry.
 
-![](Test_RaiseError.png)
-![](Teams_raise_error.png)
+![](https://github.com/KurroLopez/iris-teams-adapter/blob/master/Test_RaiseError.png)
+![](https://github.com/KurroLopez/iris-teams-adapter/blob/master/Teams_raise_error.png)
