@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2023.3 (Build 254U)" ts="2024-03-01 08:17:21">
+<Class name="Demo.Rule.AlertRules">
+<Description>
+</Description>
+<Super>Ens.Rule.Definition</Super>
+<TimeChanged>66900,29796.017150575</TimeChanged>
+<TimeCreated>66900,29796.017150575</TimeCreated>
+
+<Parameter name="RuleAssistClass">
+<Default>EnsLib.MsgRouter.RuleAssist</Default>
+</Parameter>
+
+<XData name="RuleDefinition">
+<XMLNamespace>http://www.intersystems.com/rule</XMLNamespace>
+<Data><![CDATA[
+<ruleDefinition alias="" context="EnsLib.MsgRouter.RoutingEngine" production="Demo.Production">
+<ruleSet name="" effectiveBegin="" effectiveEnd="">
+<rule name="">
+<when condition="1" comment="">
+<send transform="St.Teams.DT.EnsAlertToAdaptiveRequest" target="St.Teams.BO.Api.Teams"></send>
+</when>
+</rule>
+</ruleSet>
+</ruleDefinition>
+]]></Data>
+</XData>
+</Class>
+</Export>

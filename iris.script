@@ -1,9 +1,17 @@
-zn "%SYS"
-Do ##class(Security.Users).UnExpireUserPasswords("*")
-set prop("DeepSeeEnabled")=1
-do ##class(Security.Applications).Modify("/csp/user",.prop)
-zn "USER"
-zpm "load /opt/irisbuild/ -v":1
-zpm "install iris-deploy-tools -v" 
-hang 2
-halt
+    zn "%SYS"
+
+    // Unexpire passwords and set up passwordless mode to simplify dev use.
+    // ** Comment out these two line for Production use **
+    do ##class(Security.Users).UnExpireUserPasswords("*")
+    zpm "install passwordless"
+
+    do ##class(Security.Applications).Modify("/csp/user",.prop)
+    zn "USER"
+    zpm "load /opt/irisbuild/ -v":1
+    zpm "install iris-deploy-tools -v" 
+    zpm "install webterminal -v"
+    do $system.OBJ.LoadDir("/opt/irisbuild/src/Demo","ck")
+    do ##class(Demo.Installer).setupInit()
+    do ##class(Ens.Director).SetAutoStart("Demo.Production")
+    hang 2
+    halt

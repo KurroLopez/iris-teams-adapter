@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2023.3 (Build 254U)" ts="2024-03-01 10:35:09">
+<Class name="Demo.BP.RaiseError">
+<Description>
+Raise an error divided by zero</Description>
+<Super>Ens.BusinessProcessBPL</Super>
+<TimeChanged>66900,38054.371887187</TimeChanged>
+<TimeCreated>66900,37878.636799231</TimeCreated>
+
+<XData name="BPL">
+<Description>
+BPL Definition</Description>
+<XMLNamespace>http://www.intersystems.com/bpl</XMLNamespace>
+<Data><![CDATA[
+<process language='objectscript' request='Ens.Request' response='Ens.Response' height='2000' width='2000' >
+<context>
+<property name='errorText' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='' />
+</parameters>
+</property>
+</context>
+<sequence xend='200' yend='700' >
+<scope xpos='200' ypos='250' xend='200' yend='600' >
+<code name='Divided By 0' xpos='200' ypos='350' >
+<![CDATA[ set value = 1/0]]]]><![CDATA[>
+</code>
+<faulthandlers>
+<catchall xpos='200' ypos='450' xend='200' yend='450' >
+<code name='Capture error' xpos='200' ypos='250' >
+<![CDATA[    try {
+   // get info about the error that has ocurred
+   set errorText = $system.Status.GetErrorText(..%Context.%LastError)   
+   if ..%Context.%LastFault'="" {
+     set errorText = ..%Context.%LastFault
+   }
+   
+   // make sure the error is shown on the Ensemble log
+   $$$LOGERROR("Error trapped: "_errorText)
+   
+   // save the error text, so we can generate an alert with this text
+   set context.errorText = errorText
+
+   } catch ex {
+    // an error has happened in the error handling code!
+    $$$LOGERROR("Error Handling: "_ex.DisplayString())
+   }]]]]><![CDATA[>
+</code>
+<alert value='context.errorText' xpos='200' ypos='350' />
+</catchall>
+</faulthandlers>
+</scope>
+</sequence>
+</process>
+]]></Data>
+</XData>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+</Storage>
+</Class>
+
+
+<Class name="Demo.BP.SendMessage">
+<Description>
+Send a personal message</Description>
+<Super>Ens.BusinessProcessBPL</Super>
+<TimeChanged>66900,36327.352460679</TimeChanged>
+<TimeCreated>66900,36029.456140339</TimeCreated>
+
+<XData name="BPL">
+<Description>
+BPL Definition</Description>
+<XMLNamespace>http://www.intersystems.com/bpl</XMLNamespace>
+<Data><![CDATA[
+<process language='objectscript' request='Ens.StringRequest' response='Ens.Response' height='2000' width='2000' >
+<context>
+<property name='adaptiveCard' type='St.Teams.Msg.Adaptive.Request' instantiate='0' />
+</context>
+<sequence xend='200' yend='550' >
+<code name='Prepare message' xpos='200' ypos='250' >
+<![CDATA[ set context.adaptiveCard = ##class(St.Teams.Msg.Adaptive.Request).%New()
+ set attach = ##class(St.Teams.Msg.Adaptive.Attachment).%New()
+ set content = ##class(St.Teams.Msg.Adaptive.Content).%New()
+ 
+ set container = ##class(St.Teams.Msg.Common.Item).%New()
+ set container.Type = "Container"
+ 
+ set item1=##class(St.Teams.Msg.Common.Item).%New()
+ set item1.Type = "TextBlock"
+ set item1.Text = "Personal message"
+ set item1.Weight = "bolder"
+ set item1.Size = "large"
+ 
+ set item2=##class(St.Teams.Msg.Common.Item).%New()
+ set item2.Type = "TextBlock"
+ set item2.Text = request.StringValue
+ set item2.Wrap = 1
+ 
+ do container.Items.Insert(item1)
+ do container.Items.Insert(item2)
+ 
+ do content.Body.Insert(container)
+ set attach.Content = content
+
+ do context.adaptiveCard.Attachments.Insert(attach)]]]]><![CDATA[>
+</code>
+<call name='Call API' target='St.Teams.BO.Api.Teams' async='1' xpos='200' ypos='350' >
+<request type='St.Teams.Msg.Adaptive.Request' >
+<assign property="callrequest" value="context.adaptiveCard" action="set" />
+</request>
+<response type='Ens.StringResponse' />
+</call>
+<sync name='Wait Call APi' calls='Call API' type='all' xpos='200' ypos='450' />
+</sequence>
+</process>
+]]></Data>
+</XData>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+</Storage>
+</Class>
+</Export>
