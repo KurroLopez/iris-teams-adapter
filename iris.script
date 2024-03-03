@@ -10,6 +10,12 @@
     zpm "load /opt/irisbuild/ -v":1
     zpm "install iris-deploy-tools -v" 
     zpm "install webterminal -v"
+    // Create /_vscode web app to support intersystems-community.testingmanager VS Code extension
+    zpm "install vscode-per-namespace-settings"
+
+    // Configure %UnitTest in USER to suit the VS Code extension
+    set ^UnitTestRoot="/usr/irissys/.vscode/USER/UnitTestRoot"
+
     do $system.OBJ.LoadDir("/opt/irisbuild/src/Demo","ck")
     do ##class(Demo.Installer).setupInit()
     do ##class(Ens.Director).SetAutoStart("Demo.Production")
