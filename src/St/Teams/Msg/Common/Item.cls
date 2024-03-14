@@ -2,7 +2,7 @@ Class St.Teams.Msg.Common.Item Extends (%SerialObject, %JSON.Adaptor, %XML.Adapt
 {
 
 /// Type of Item
-Property Type As %String(%JSONFIELDNAME = "type", VALUELIST = ",TextBlock,Container,ColumnSet,Column,FactSet") [ Required ];
+Property Type As %String(%JSONFIELDNAME = "type", VALUELIST = ",TextBlock,Container,ColumnSet,Column,FactSet,Image") [ Required ];
 
 /// Text of the item
 Property Text As %String(%JSONFIELDNAME = "text", MAXLEN = "");
@@ -35,6 +35,19 @@ Property Columns As list Of St.Teams.Msg.Common.Item(%JSONFIELDNAME = "columns",
 
 /// Fact items list
 Property Facts As list Of St.Teams.Msg.Common.FactItem(%JSONFIELDNAME = "facts", XMLPROJECTION = "ELEMENT");
+
+/// Url of the image, for Type=Image
+/// Addmit Teams url, like ${creator.profileImage}
+Property Url As %String(%JSONFIELDNAME = "url", MAXLEN = "");
+
+/// Alternative text of the image, for Type=Image
+/// Addmit Teams url, like ${creator.name}
+Property AltText As %String(%JSONFIELDNAME = "altText", MAXLEN = "");
+
+/// Style of the image, for Type=Image
+/// Default: The image as is
+/// Person: Put the image into a circle
+Property Style As %String(%JSONFIELDNAME = "style", VALUELIST = ",default,person") [ InitialExpression = "default" ];
 
 Storage Default
 {
@@ -71,6 +84,15 @@ Storage Default
 </Value>
 <Value name="11">
 <Value>Facts</Value>
+</Value>
+<Value name="12">
+<Value>Url</Value>
+</Value>
+<Value name="13">
+<Value>AltText</Value>
+</Value>
+<Value name="14">
+<Value>Style</Value>
 </Value>
 </Data>
 <State>ItemState</State>

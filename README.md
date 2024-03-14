@@ -9,7 +9,7 @@ Due to a need on the part of my company's development team to be able to receive
 You can configure the Webhook in your MS Teams account by following the instructions on the "[How to create an incoming webhook](https://learn.microsoft.com/es-es/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet#create-an-incoming-webhook)" page
 
 ## Install ZPM
-Use the command zpm "install iris-teams-adapter" to install direcly in your nanespace
+Use the command zpm "install iris-teams-adapter" to install direcly in your namespace
 
 ## Prerequisites
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
